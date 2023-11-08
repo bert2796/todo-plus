@@ -1,0 +1,64 @@
+{
+  "name": "grpc-profile-service",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/grpc-profile-service/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "target": "node",
+        "compiler": "tsc",
+        "outputPath": "dist/apps/grpc-profile-service",
+        "main": "apps/grpc-profile-service/src/main.ts",
+        "tsConfig": "apps/grpc-profile-service/tsconfig.app.json",
+        "assets": ["apps/grpc-profile-service/src/assets"],
+        "isolatedConfig": true,
+        "webpackConfig": "apps/grpc-profile-service/webpack.config.js"
+      },
+      "configurations": {
+        "development": {},
+        "production": {}
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "grpc-profile-service:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "grpc-profile-service:build:development"
+        },
+        "production": {
+          "buildTarget": "grpc-profile-service:build:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/grpc-profile-service/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "apps/grpc-profile-service/jest.config.ts",
+        "passWithNoTests": true
+      },
+      "configurations": {
+        "ci": {
+          "ci": true,
+          "codeCoverage": true
+        }
+      }
+    }
+  },
+  "tags": []
+}
